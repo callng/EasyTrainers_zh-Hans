@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Toggle = {}
 
 local Draw = require("UI/Core/Draw")
@@ -12,6 +13,8 @@ function Toggle.Create(label, valueRef, tip, action)
 end
 
 function Toggle.Draw(label, valueRef, tip, id)
+    id = id or label
+    label = Language.Text(label)
     local data = Widget.Begin(true)
     if not data.Visible then return false, data end
 

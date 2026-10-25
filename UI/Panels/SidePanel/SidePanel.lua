@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Animation = require("UI/Widgets/Animation/Animation")
 local Context = require("UI/Core/Context")
 local Draw = require("UI/Core/Draw")
@@ -8,6 +9,7 @@ local Style = require("UI/Style/Style")
 local SidePanel = { Submitted = {}, States = {} }
 
 local function TextColored(color, text)
+    text = Language.Text(text)
     local value = ImGui.ColorConvertU32ToFloat4(color)
     ImGui.TextColored(value[1], value[2], value[3], value[4], text)
 end
@@ -38,6 +40,7 @@ function SidePanel.Submit(id, draw, options)
 end
 
 local function Wrapped(color, text, width)
+    text = Language.Text(text)
     ImGui.PushTextWrapPos(width - PADDING)
     if color then TextColored(color, text) else ImGui.Text(text) end
     ImGui.PopTextWrapPos()
@@ -49,6 +52,7 @@ local function NextLine(x)
 end
 
 local function DrawRow(label, value, width)
+    label, value = Language.Text(label), Language.Text(value)
     local x, y = ImGui.GetCursorScreenPos()
     local right = x + width - (PADDING * 2)
     local valueWidth = ImGui.CalcTextSize(value)

@@ -1,0 +1,22 @@
+{
+  "commit": "2e4af6e04390c593976610990766561d08156d55",
+  "files": {
+    "Assets/Icons/ItemIcons.lua": "7229cf4c57a07f68026dd357645c27a8715b10be60283654199cbda9826e93ec",
+    "Assets/Icons/ItemIcons0.png": "f8229dfe5d644f39cb51ec3d1a0dcbc6795217a6ac1ed5ef82c85e42087b94a4",
+    "Assets/Icons/ItemIcons1.png": "947cd15c5fcf30976e479a5bcc5d5b8e53011af55f3f05a66ddbaa24961c078f",
+    "Assets/Icons/ItemIcons2.png": "c5296fac910cee3fc4ca5f36dea13cb7ac5c5444c2bc78dff121d7dc3fa7eef1",
+    "Assets/Icons/VehicleIcons.lua": "1b504d91006ca2142f89075c7c6a4f075cade8b7e38e7fa4c6a0eb9c5c45e521",
+    "Assets/Icons/VehicleIcons0.png": "9349818038f909510088c7fb9bf90e2c5c4ccc2d89e71411ae2d9f163ac24baf",
+    "Assets/Icons/WeaponIcons.lua": "4e0df5ed764d9436bfc70019e9a5ea124acdd11b0e1560872062fec76b81d005",
+    "Assets/Icons/WeaponIcons0.png": "4f9fc0159a1ff7e33c3e8744062af4fc09e0583b23151d06987e127b2541b063",
+    "Assets/Icons/WeaponIcons1.png": "44956f51ba59b82d657cd0c0a78cf092302e929d50b74b758847023751065f64",
+    "Assets/Map/NightCity.lua": "1f292a767fe225ddbbca2686f1b60e15899acc9347e0ce3a707c5e9f098c799f",
+    "Assets/Map/NightCity.png": "d5c0d1161f691f01833a6a58552402ca282746c18d82a484ccd555fcc26ab545",
+    "Config/JSON/Teleports.json": "26abb8c5ee02603a3cd92f5861d6561a928e7e1fac31eb37a1b2ba3b7aab68e3",
+    "Config/JSON/bindings.json": "9ef8a39b0bf1fcd8dfc578cf4b32bec3da88f8fef1d3b8e7c60545c33f378611",
+    "Core/cp2077-cet-kit/Cron.lua": "0e27050913d904e22d997c97978d3ad2e307ae3e3dcd5513c20f3cb79a275198",
+    "Core/cp2077-cet-kit/GameSession.lua": "0fe5f78551c998cc82ed0fec72c033dd3701bebd601306ce93b0d0b91ea8eb9e",
+    "Core/cp2077-cet-kit/LICENSE.txt": "ebfd5f05db59b0d8d233c10967a546a3ee7635ff339be7a6688154cbf6215855",
+    "lang/en.json": "59d785187eb915fa99d59904ca0b8bb01f7a30178554428bdffdb8e06156142d"
+  }
+}

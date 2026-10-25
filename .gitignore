@@ -16,3 +16,8 @@ Config/JSON/bindings.json
 EasyTrainer.log
 REDmodLog.txt
 CHANGELOG-2.3.md
+
+# Local trainer preferences and Python verification caches
+Config/JSON/Settings.json
+__pycache__/
+*.pyc

@@ -8,6 +8,24 @@ local Language = {
 local s_CurrentCode = "en"
 local s_Translations = {}
 local s_Fallback = {}
+local s_TextPatterns = {}
+local s_TextLower = {}
+
+-- Match only explicit display templates supplied by the selected language.
+local function CompileTextPattern(template)
+    local parts, keys = {}, {}
+    local index = 1
+    while true do
+        local first, last, key = template:find("{(%d+)}", index)
+        local literal = template:sub(index, first and first - 1 or #template)
+        parts[#parts + 1] = literal:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
+        if not first then break end
+        parts[#parts + 1] = "(.-)"
+        keys[#keys + 1] = key
+        index = last + 1
+    end
+    return "^" .. table.concat(parts) .. "$", keys
+end
 
 local function IsValidCode(code)
     return type(code) == "string" and code:match("^[%w_%-]+$") ~= nil
@@ -67,6 +85,13 @@ function Language.Load(code)
     s_CurrentCode = requested
     s_Translations = data
     s_Fallback = fallback
+    s_TextPatterns = {}
+    s_TextLower = {}
+    for key, value in pairs(data._text or {}) do s_TextLower[key:lower()] = value end
+    for _, entry in ipairs(data._patterns or {}) do
+        local pattern, keys = CompileTextPattern(entry.source)
+        s_TextPatterns[#s_TextPatterns + 1] = { Pattern = pattern, Keys = keys, Target = entry.target }
+    end
     Logger.Log("Language: loaded '" .. requested .. "'")
     return true
 end
@@ -103,9 +128,39 @@ function Language.Has(key)
     return Lookup(s_Translations, key) ~= nil or Lookup(s_Fallback, key) ~= nil
 end
 
+-- Display-only translation: IDs, category keys and saved values remain original.
+function Language.Text(text, depth)
+    text = tostring(text or "")
+    local dictionary = s_Translations._text or {}
+    if dictionary[text] then return dictionary[text] end
+    if s_TextLower[text:lower()] then return s_TextLower[text:lower()] end
+    depth = depth or 0
+    if depth >= 3 then return text end
+    for _, entry in ipairs(s_TextPatterns) do
+        local values = { text:match(entry.Pattern) }
+        if #values > 0 then
+            local resolved = {}
+            for index, key in ipairs(entry.Keys) do
+                resolved[key] = Language.Text(values[index], depth + 1)
+            end
+            return (entry.Target:gsub("{(%d+)}", function(key) return resolved[key] or "" end))
+        end
+    end
+    return text
+end
+
+function Language.Format(format, ...)
+    local args = { ... }
+    local count = select("#", ...)
+    for index = 1, count do
+        if type(args[index]) == "string" then args[index] = Language.Text(args[index]) end
+    end
+    return string.format(Language.Text(format), (table.unpack or unpack)(args, 1, count))
+end
+
 function Language.Get(key)
     if type(key) ~= "string" then return tostring(key or "") end
-    return Lookup(s_Translations, key) or Lookup(s_Fallback, key) or key
+    return Lookup(s_Translations, key) or Lookup(s_Fallback, key) or Language.Text(key)
 end
 
 function Language.GetCurrentCode()

@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Break = {}
 
 local Draw = require("UI/Core/Draw")
@@ -16,7 +17,7 @@ function Break.Draw(label, alignment)
     if not data.Visible then return data end
 
     local drawList = ImGui.GetWindowDrawList()
-    local text = tostring(label or "")
+    local text = Language.Text(label)
     local textY = Widget.GetTextY(data)
     local textWidth = ImGui.CalcTextSize(text)
     local textX = data.X + BreakStyle.Padding

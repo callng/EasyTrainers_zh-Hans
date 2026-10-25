@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Button = {}
 
 local Draw = require("UI/Core/Draw")
@@ -55,7 +56,10 @@ local function DrawSlider(drawList, data, display, ratio, focus, clicked, textY)
     return controlWidth
 end
 
-function Button.Draw(label, tip, rightText, id, valueControl, ratio)
+function Button.Draw(label, tip, rightText, id, valueControl, ratio, literalValue)
+    id = id or label
+    label = Language.Text(label)
+    if rightText ~= nil and not literalValue then rightText = Language.Text(rightText) end
     local data = Widget.Begin(true)
     if not data.Visible then return false, data end
 

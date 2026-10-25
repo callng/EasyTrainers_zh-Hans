@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Buttons = require("UI/Options/Buttons")
 local Submenu = require("UI/Navigation/Submenu")
 local SidePanel = require("UI/Panels/SidePanel/SidePanel")
@@ -150,7 +151,7 @@ local function SubmitWeaponInfo(weapon)
         Title = weapon.displayName or "Unknown Weapon",
         Icon = weapon.id,
         Rows = rows,
-        Description = (description ~= "" and (description .. "\n\n") or "") .. weapon.id .. footer
+        Description = (description ~= "" and (description .. "\n\n") or "") .. weapon.id .. Language.Text(footer)
     }, { Width = 340 })
 end
 
@@ -256,7 +257,7 @@ local function ListView()
         ApplyToAll(weapons)
     end)
 
-    Buttons.Break(tostring(#weapons) .. " " .. s_List.Title)
+    Buttons.Break(Language.Format("%d %s", #weapons, s_List.Title))
     for _, weapon in ipairs(weapons) do WeaponRow(weapon) end
     if #weapons == 0 then Buttons.Break(L("weaponsitems.noweaponsfound.label")) end
 end

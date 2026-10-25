@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Inventory = require("Utils/Inventory")
 local Notification = require("UI/Panels/Notification/Notification")
 local DataUtils = require("Utils/DataExtractors/DataUtils")
@@ -103,9 +104,9 @@ function ItemBrowserState.Apply(item, quantity, quiet)
         end
         Remember(item)
         if quiet then return success end
-        Notification.Success(string.format("%s %dx %s", removing and "Removed" or "Added", amount, name), 2)
+        Notification.Success(Language.Format("%s %dx %s", removing and "Removed" or "Added", amount, name), 2)
     elseif not quiet then
-        Notification.Error(string.format("Could not %s %s", removing and "remove" or "add", name), 2)
+        Notification.Error(Language.Format("Could not %s %s", removing and "remove" or "add", name), 2)
     end
     return success
 end

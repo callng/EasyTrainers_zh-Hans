@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Buttons = require("UI/Options/Buttons")
 local Submenu = require("UI/Navigation/Submenu")
 local SidePanel = require("UI/Panels/SidePanel/SidePanel")
@@ -270,7 +271,7 @@ end
 
 local function PerkTip(perk, maxLevel)
     local key = maxLevel > 1 and "playerdev.perks.tipmulti" or "playerdev.perks.tipsingle"
-    return tip(key, { category = perk.category, levels = maxLevel })
+    return tip(key, { category = Language.Text(perk.category), levels = maxLevel })
 end
 
 local function SubmitPerkInfo(perk, current, maxLevel, missing)

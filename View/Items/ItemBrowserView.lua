@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Buttons = require("UI/Options/Buttons")
 local Submenu = require("UI/Navigation/Submenu")
 local SidePanel = require("UI/Panels/SidePanel/SidePanel")
@@ -183,7 +184,7 @@ local function ListView()
         ApplyToAll(items)
     end)
 
-    Buttons.Break(tostring(#items) .. " " .. s_List.Title)
+    Buttons.Break(Language.Format("%d %s", #items, s_List.Title))
     for _, item in ipairs(items) do DrawItem(item, s_List.Category, s_List.Group) end
     if #items == 0 then Buttons.Break("No items match these filters") end
 end

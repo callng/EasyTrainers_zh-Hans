@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local BindButton = require("UI/Options/BindButton")
 local Icons = require("UI/Style/Icons")
 local Break = require("UI/Widgets/Break/Break")
@@ -41,9 +42,9 @@ end
 
 local function HotkeyTip(tip, hotkey)
     local bound = BindButton.Format(hotkey)
-    local hint = "Hotkey: " .. bound .. ". Press " .. BindButton.Format("MISC") .. " to rebind."
+    local hint = Language.Format("Hotkey: %s. Press %s to rebind.", bound, BindButton.Format("MISC"))
     if not tip or tip == "" then return hint end
-    return tip .. " " .. hint
+    return Language.Text(tip) .. " " .. hint
 end
 
 function Buttons.Option(label, tip, action)
@@ -285,6 +286,7 @@ local function CloseText()
 end
 
 local function TextButton(drawList, x, y, label)
+    label = Language.Text(label)
     local hovered = Mouse.IsInside(x, y, TEXT_BUTTON_WIDTH, TEXT_BUTTON_HEIGHT)
     Draw.RectFilled(drawList, x, y, TEXT_BUTTON_WIDTH, TEXT_BUTTON_HEIGHT, hovered and Style.Accent or Style.BackgroundDark, 5)
     Draw.Rect(drawList, x, y, TEXT_BUTTON_WIDTH, TEXT_BUTTON_HEIGHT, Style.Border, 5, 1)
@@ -293,6 +295,7 @@ local function TextButton(drawList, x, y, label)
 end
 
 local function DrawTextWindow(label)
+    label = Language.Text(label)
     local screenWidth, screenHeight = GetDisplayResolution()
     local x, y = (screenWidth - TEXT_WIDTH) * 0.5, (screenHeight - TEXT_HEIGHT) * 0.5
     ImGui.SetNextWindowPos(x, y)
@@ -312,7 +315,7 @@ local function DrawTextWindow(label)
     Draw.RectFilled(drawList, x + 16, boxY, TEXT_WIDTH - 32, 30, Style.BackgroundDark, 5)
     Draw.Rect(drawList, x + 16, boxY, TEXT_WIDTH - 32, 30, Style.Accent, 5, 1)
     Draw.Text(drawList, x + 24, boxY + (30 - ImGui.GetFontSize()) * 0.5, Style.Text, Draw.FitText(s_TextBuffer .. caret, TEXT_WIDTH - 48))
-    Draw.Text(drawList, x + 16, boxY + 38, Style.TextDisabled, "Enter to apply, Esc to cancel.")
+    Draw.Text(drawList, x + 16, boxY + 38, Style.TextDisabled, Language.Text("Enter to apply, Esc to cancel."))
 
     local buttonY = y + TEXT_HEIGHT - TEXT_BUTTON_HEIGHT - 12
     local apply = TextButton(drawList, x + TEXT_WIDTH - (TEXT_BUTTON_WIDTH * 2) - 24, buttonY, "Apply")
@@ -325,7 +328,7 @@ local function DrawTextWindow(label)
 end
 
 function Buttons.Text(label, ref, tip, action)
-    local activated = Button.Draw(label, tip, ref.value or "", Id(label, ref, "text"))
+    local activated = Button.Draw(label, tip, ref.value or "", Id(label, ref, "text"), nil, nil, true)
     if activated then
         s_ActiveTextRef = ref
         s_TextBuffer = ref.value or ""

@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Animation = require("UI/Widgets/Animation/Animation")
 local Context = require("UI/Core/Context")
 local Draw = require("UI/Core/Draw")
@@ -40,7 +41,7 @@ function Notification.Push(text, options)
     options = options or {}
     local position = NormalizePosition(options.Position or options.position)
     if position == "auto" then position = ResolveAutoPosition() end
-    local value = tostring(text or "")
+    local value = Language.Text(text)
     if value == "" then return nil end
 
     local entry = {
@@ -90,16 +91,9 @@ function Notification.Initialize()
 end
 
 local function EstimateHeight(text, width)
-    local lineWidth, lines = 0, 1
-    for word in text:gmatch("%S+") do
-        local wordWidth = ImGui.CalcTextSize(word .. " ")
-        if lineWidth > 0 and lineWidth + wordWidth > width then
-            lines, lineWidth = lines + 1, wordWidth
-        else
-            lineWidth = lineWidth + wordWidth
-        end
-    end
-    return math.max(62, (lines * ImGui.GetTextLineHeight()) + 42)
+    local scale = (tonumber(Layout.FontScale) or 100) / 100
+    local _, height = ImGui.CalcTextSize(tostring(text or ""), false, math.max(1, width / scale))
+    return math.max(62, height * scale + 42)
 end
 
 local function GetPosition(position, width, height, offset, slide)
@@ -163,7 +157,7 @@ function Notification.Render()
             Draw.RectFilled(drawList, x + 8, y + height - 5, (width - 16) * progress, 2,
                 Animation.WithAlpha(accent, entry.Alpha), 1)
             ImGui.SetCursorScreenPos(x + 16, y + 10)
-            TextColored(accent, entry.Kind:upper())
+            TextColored(accent, Language.Text(entry.Kind:upper()))
             ImGui.SetCursorScreenPos(x + 16, y + 28)
             ImGui.PushTextWrapPos(width - 14)
             TextColored(Style.Text, entry.Writer.Displayed)

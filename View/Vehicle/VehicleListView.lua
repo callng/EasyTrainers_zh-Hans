@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Buttons = require("UI/Options/Buttons")
 local Submenu = require("UI/Navigation/Submenu")
 local SidePanel = require("UI/Panels/SidePanel/SidePanel")
@@ -317,7 +318,7 @@ end
 
 local function DespawnAll()
     local count = Spawning.DespawnAll()
-    Notification.Info(string.format("Removed %d spawned vehicles", count), 2)
+    Notification.Info(Language.Format("Removed %d spawned vehicles", count), 2)
 end
 
 local function VehicleListView()

@@ -58,7 +58,7 @@ function Animation.SetText(writer, text)
     while shared < limit and writer.Displayed:byte(shared + 1) == text:byte(shared + 1) do
         shared = shared + 1
     end
-    while shared > 0 and text:byte(shared) >= 0x80 and text:byte(shared) < 0xC0 do
+    while shared > 0 and text:byte(shared + 1) and text:byte(shared + 1) >= 0x80 and text:byte(shared + 1) < 0xC0 do
         shared = shared - 1
     end
 

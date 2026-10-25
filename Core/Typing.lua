@@ -12,6 +12,14 @@ local REPEAT_DELAY = 0.45
 local REPEAT_RATE = 0.04
 local MAX_LENGTH = 256
 
+local function LimitUtf8(buffer)
+    local cut = math.min(#buffer, MAX_LENGTH)
+    while cut > 0 and buffer:byte(cut + 1) and buffer:byte(cut + 1) >= 0x80 and buffer:byte(cut + 1) < 0xC0 do
+        cut = cut - 1
+    end
+    return buffer:sub(1, cut)
+end
+
 local CHARACTERS = {
     [0x20] = { " ", " " },
     [0x30] = { "0", ")" }, [0x31] = { "1", "!" }, [0x32] = { "2", "@" }, [0x33] = { "3", "#" }, [0x34] = { "4", "$" },
@@ -104,7 +112,7 @@ function Typing.Update(buffer)
     if native ~= nil then
         local submitted, cancelled
         buffer, submitted, cancelled = ApplyNativeText(buffer, native)
-        return buffer:sub(1, MAX_LENGTH), submitted, cancelled
+        return LimitUtf8(buffer), submitted, cancelled
     end
 
     local now = os.clock()
@@ -126,7 +134,7 @@ function Typing.Update(buffer)
         end
     end
 
-    return buffer:sub(1, MAX_LENGTH), false, false
+    return LimitUtf8(buffer), false, false
 end
 
 return Typing

@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Buttons = require("UI/Options/Buttons")
 local Submenu = require("UI/Navigation/Submenu")
 local Notification = require("UI/Panels/Notification/Notification")
@@ -30,7 +31,7 @@ local function SpeedometerView()
 
     if Speedometer.AutomaticMaxSpeed.value then
         local detected = Speedometer.DetectedMaxSpeed
-        Buttons.OptionExtended("Detected Maximum", "", detected and string.format("%.0f KM/H", detected) or "Manual fallback",
+        Buttons.OptionExtended("Detected Maximum", "", detected and Language.Format("%.0f KM/H", detected) or "Manual fallback",
             "The dial range estimated from the mounted vehicle's drivetrain.")
     else
         Buttons.Int("Maximum Speed", Speedometer.MaxSpeed, "Maximum speed shown around the analog dial.", UIConfig.Save)

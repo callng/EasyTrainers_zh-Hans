@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Buttons = require("UI/Options/Buttons")
 local Submenu = require("UI/Navigation/Submenu")
 local Notification = require("UI/Panels/Notification/Notification")
@@ -21,6 +22,7 @@ local s_QuickOptions = {}
 local s_QuickLabels = {}
 
 local s_KnownCount = -1
+local s_KnownLanguage = nil
 local s_FilterKey = nil
 local s_Categories = {}
 local s_CategoryCounts = {}
@@ -33,8 +35,8 @@ local function AllAreas() return L("teleport.area_all") end
 
 local function FormatDistance(distance)
     if not distance then return "" end
-    if distance >= 1000 then return string.format("%.2f km", distance / 1000) end
-    return string.format("%d m", math.floor(distance))
+    if distance >= 1000 then return Language.Format("%.2f km", distance / 1000) end
+    return Language.Format("%d m", math.floor(distance))
 end
 
 local function UniqueSorted(first, values)
@@ -58,18 +60,21 @@ local function BuildQuickOptions()
     s_QuickOptions = {}
     s_QuickLabels = {}
 
-    local vendorPrefix = L("teleport.quick_closest_vendor")
+    local vendorPrefix = "teleport.quick_closest_vendor"
     for category in pairs(TeleportLocations.GetVendors()) do
-        table.insert(s_QuickOptions, { Kind = "vendor", Key = category, Label = vendorPrefix .. " " .. category })
+        table.insert(s_QuickOptions, { Kind = "vendor", Key = category, Label = category })
     end
 
-    local apartmentPrefix = L("teleport.quick_apartment")
+    local apartmentPrefix = "teleport.quick_apartment"
     for _, apartment in ipairs(TeleportLocations.GetApartments()) do
-        table.insert(s_QuickOptions, { Kind = "apartment", Key = apartment.name, Position = apartment.position, Label = apartmentPrefix .. ": " .. apartment.name })
+        table.insert(s_QuickOptions, { Kind = "apartment", Key = apartment.name, Position = apartment.position, Label = apartment.name })
     end
 
     table.sort(s_QuickOptions, function(a, b) return a.Label < b.Label end)
-    for _, option in ipairs(s_QuickOptions) do table.insert(s_QuickLabels, option.Label) end
+    for _, option in ipairs(s_QuickOptions) do
+        local prefix = L(option.Kind == "vendor" and vendorPrefix or apartmentPrefix)
+        table.insert(s_QuickLabels, prefix .. ": " .. Language.Text(option.Label))
+    end
     s_Quick.index = math.max(1, math.min(s_Quick.index or 1, #s_QuickOptions))
 end
 
@@ -101,6 +106,7 @@ local function RebuildViewData()
     BuildQuickOptions()
 
     s_KnownCount = #TeleportLocations.GetAll()
+    s_KnownLanguage = Language.GetCurrentCode()
     s_FilterKey = nil
 end
 
@@ -118,9 +124,9 @@ end
 local function FilterCaption()
     local parent = s_Parents[s_Parent.index or 1]
     local child = s_Children[s_Child.index or 1]
-    if child and child ~= AllAreas() then return child .. ", " .. tostring(parent) end
-    if parent and parent ~= AllDistricts() then return parent end
-    return "Night City"
+    if child and child ~= AllAreas() then return Language.Text(child) .. ", " .. Language.Text(parent) end
+    if parent and parent ~= AllDistricts() then return Language.Text(parent) end
+    return Language.Text("Night City")
 end
 
 local function RefreshCategories()
@@ -177,9 +183,9 @@ local function DoQuickTeleport(option)
     if not position or not Teleport.TeleportEntity(Game.GetPlayer(), position) then return end
 
     if option.Kind == "vendor" then
-        Notification.Info(L("teleport.quick_closest_vendor_notify") .. " " .. option.Key .. " (" .. name .. ")")
+        Notification.Info(L("teleport.quick_closest_vendor_notify") .. " " .. Language.Text(option.Key) .. " (" .. Language.Text(name) .. ")")
     else
-        Notification.Info(L("teleport.quick_apartment_notify") .. ": " .. name)
+        Notification.Info(L("teleport.quick_apartment_notify") .. ": " .. Language.Text(name))
     end
 end
 
@@ -279,7 +285,7 @@ local function LocationsView()
 end
 
 local function TeleportView()
-    if s_KnownCount ~= #TeleportLocations.GetAll() then RebuildViewData() end
+    if s_KnownCount ~= #TeleportLocations.GetAll() or s_KnownLanguage ~= Language.GetCurrentCode() then RebuildViewData() end
 
     Buttons.Submenu(L("teleport.customteleports.label"), CustomTeleportView, L("teleport.customteleportview.save.tip"))
     Buttons.Submenu(L("teleport.miscsubmenu.label"), SettingsMenu, L("teleport.miscsubmenu.tip"))

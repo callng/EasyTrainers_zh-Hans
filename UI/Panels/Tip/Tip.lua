@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Animation = require("UI/Widgets/Animation/Animation")
 local Context = require("UI/Core/Context")
 local Draw = require("UI/Core/Draw")
@@ -20,22 +21,8 @@ end
 
 local function EstimateHeight(text, width)
     local scale = (tonumber(Layout.FontScale) or 100) / 100
-    width = width / scale
-    local lines = 0
-    for rawLine in (tostring(text or "") .. "\n"):gmatch("(.-)\n") do
-        local lineWidth = 0
-        lines = lines + 1
-        for word in rawLine:gmatch("%S+") do
-            local wordWidth = ImGui.CalcTextSize(word .. " ")
-            if lineWidth > 0 and lineWidth + wordWidth > width then
-                lines = lines + 1
-                lineWidth = wordWidth
-            else
-                lineWidth = lineWidth + wordWidth
-            end
-        end
-    end
-    return math.max(38, (lines * ImGui.GetTextLineHeight() * scale) + 26)
+    local _, height = ImGui.CalcTextSize(tostring(text or ""), false, math.max(1, width / scale))
+    return math.max(38, height * scale + 26)
 end
 
 function Tip.Initialize()
@@ -53,7 +40,7 @@ function Tip.BeginFrame()
 end
 
 function Tip.Set(text, source)
-    text = tostring(text or "")
+    text = Language.Text(text)
     if text == "" then return end
     Tip.SubmittedText = text
     Tip.SubmittedSource = source

@@ -84,8 +84,8 @@ local function OnSessionEvent(state)
 end
 
 local function LoadLanguage()
-    local settings = JsonHelper.LoadOrCreate("Config/JSON/Settings.json", { shown = false, Lang = "en" })
-    local code = settings and settings.Lang or "en"
+    local settings = JsonHelper.LoadOrCreate("Config/JSON/Settings.json", { shown = false, Lang = "zh-cn" })
+    local code = settings and settings.Lang or "zh-cn"
     if Language.Load(code) then return end
 
     Logger.Log("Language failed to load, falling back to English")

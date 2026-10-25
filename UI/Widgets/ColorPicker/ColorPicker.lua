@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Animation = require("UI/Widgets/Animation/Animation")
 local Icons = require("UI/Style/Icons")
 local Context = require("UI/Core/Context")
@@ -98,7 +99,7 @@ function ColorPicker.Option(id, label, value, tip)
     local textY = data.Y + ((data.Height - ImGui.GetFontSize()) * 0.5)
     local swatchSize = data.Height - 10
     local swatchX = data.X + data.Width - swatchSize - 8
-    Draw.Text(drawList, data.X + 8, textY, Style.Text, Draw.FitText(label, data.Width - 120))
+    Draw.Text(drawList, data.X + 8, textY, Style.Text, Draw.FitText(Language.Text(label), data.Width - 120))
     Draw.Text(drawList, swatchX - 18, textY, Style.Accent,
         ColorPicker.Opened and ColorPicker.OwnerId == id and Icons.Expanded or Icons.Collapsed)
     Draw.RectFilled(drawList, swatchX, data.Y + 5, swatchSize, swatchSize, PackedColor(value), 5)
@@ -130,7 +131,7 @@ function ColorPicker.Draw()
     local x = ColorPicker.Surface.X + SurfaceStyle.Padding
     local y = ColorPicker.Surface.Y + SurfaceStyle.Padding
     local contentWidth = width - (SurfaceStyle.Padding * 2)
-    Draw.Text(drawList, x, y, Style.TextDisabled, Draw.FitText(ColorPicker.Label, contentWidth - 54))
+    Draw.Text(drawList, x, y, Style.TextDisabled, Draw.FitText(Language.Text(ColorPicker.Label), contentWidth - 54))
     Draw.RectFilled(drawList, x + contentWidth - 38, y - 3, 38, 22, PackedColor(ColorPicker.Value), 5)
     Draw.Rect(drawList, x + contentWidth - 38, y - 3, 38, 22, Style.Border, 5, 1)
     Draw.Line(drawList, x, y + 29, x + contentWidth, y + 29, Style.Border, 1)
@@ -148,7 +149,7 @@ function ColorPicker.Draw()
 
         local value = ColorPicker.Value[channel] or 0
         local barX, barY, barWidth = x + 70, rowY + 13, contentWidth - 112
-        Draw.Text(drawList, x + 9, rowY + 10, Style.Text, channel)
+        Draw.Text(drawList, x + 9, rowY + 10, Style.Text, Language.Text(channel))
         Draw.RectFilled(drawList, barX, barY, barWidth, 10, Style.BackgroundDark, 5)
         Draw.RectFilled(drawList, barX, barY, barWidth * (value / 255), 10, Style.Accent, 5)
         Draw.Rect(drawList, barX, barY, barWidth, 10, Style.Border, 5, 1)
@@ -162,8 +163,8 @@ function ColorPicker.Draw()
 
     local footerY = listY + (#Channels * rowHeight) + 9
     Draw.Line(drawList, x, footerY - 4, x + contentWidth, footerY - 4, Style.Border, 1)
-    Draw.Text(drawList, x, footerY + 5, Style.TextDisabled, "LEFT / RIGHT  ADJUST")
-    local close = "SELECT / BACK  CLOSE"
+    Draw.Text(drawList, x, footerY + 5, Style.TextDisabled, Language.Text("LEFT / RIGHT  ADJUST"))
+    local close = Language.Text("SELECT / BACK  CLOSE")
     Draw.Text(drawList, x + contentWidth - ImGui.CalcTextSize(close), footerY + 5, Style.TextDisabled, close)
     Surface.End(ColorPicker.Surface)
 end

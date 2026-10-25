@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Vehicle = require("Utils/Vehicle")
 local Animation = require("UI/Widgets/Animation/Animation")
 local Draw = require("UI/Core/Draw")
@@ -255,6 +256,7 @@ local function Polar(centerX, centerY, radius, angle)
 end
 
 local function TextCentered(drawList, x, y, color, text)
+    text = Language.Text(text)
     local width = ImGui.CalcTextSize(text)
     Draw.Text(drawList, x - (width * 0.5), y, color, text)
 end

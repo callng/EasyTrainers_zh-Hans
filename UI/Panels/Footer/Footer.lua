@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Context = require("UI/Core/Context")
 local Draw = require("UI/Core/Draw")
 local Layout = require("UI/Style/Layout")
@@ -19,7 +20,7 @@ function Footer.Draw()
 
     Draw.Line(drawList, bounds.X, y, bounds.X + bounds.Width, y, Style.Border, 1)
     if Footer.ShowVersion then
-        Draw.Text(drawList, bounds.X + Layout.Padding, textY, Style.TextDisabled, Footer.Version)
+        Draw.Text(drawList, bounds.X + Layout.Padding, textY, Style.TextDisabled, Language.Text(Footer.Version))
     end
 
     if Footer.ShowNavigation then

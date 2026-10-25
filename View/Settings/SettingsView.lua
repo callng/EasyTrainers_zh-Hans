@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Buttons = require("UI/Options/Buttons")
 local Submenu = require("UI/Navigation/Submenu")
 local Notification = require("UI/Panels/Notification/Notification")
@@ -32,7 +33,7 @@ end
 local function ClearTrainerEffects()
     StatusEffect.ClearAll()
     local count = StatModifiers.RemoveAll()
-    Notification.Success(string.format("Removed trainer effects and %d modifier groups", count), 3)
+    Notification.Success(Language.Format("Removed trainer effects and %d modifier groups", count), 3)
 end
 
 local function SettingsView()

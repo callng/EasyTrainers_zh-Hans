@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Logger = require("Core/Logger")
 local Notification = require("UI/Panels/Notification/Notification")
 
@@ -65,7 +66,7 @@ end
 local function ApplyTime(hours, minutes, seconds, label)
     if WorldTime.FreezeTime.value then
         WorldTime.FreezeTime.value = false
-        Notification.Info(string.format("Time set to %s and disabled Freeze Time", label))
+        Notification.Info(Language.Format("Time set to %s and disabled Freeze Time", label))
     end
 
     if WorldTime.SyncToSystemClock.value then
@@ -157,7 +158,7 @@ local function TickSkip(deltaTime)
 
     if s_Skip.Current >= s_Skip.Target then
         Logger.Log(string.format("WorldTime: skipped %d day(s)", s_Skip.Days))
-        Notification.Info(string.format("Skipped %d day(s)", s_Skip.Days))
+        Notification.Info(Language.Format("Skipped %d day(s)", s_Skip.Days))
         s_Skip = nil
         return
     end

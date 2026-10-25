@@ -14,7 +14,7 @@ local s_Selected = { index = 1 }
 
 local function LoadLanguages()
     s_Languages = Language.GetAvailable(LANGUAGE_FOLDER)
-    s_Settings = JsonHelper.LoadOrCreate(SETTINGS_PATH, { shown = false, Lang = "en" }) or { Lang = "en" }
+    s_Settings = JsonHelper.LoadOrCreate(SETTINGS_PATH, { shown = false, Lang = "zh-cn" }) or { Lang = "zh-cn" }
     s_Names = {}
 
     local current = s_Settings.Lang or Language.GetCurrentCode()

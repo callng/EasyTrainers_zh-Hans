@@ -3,8 +3,18 @@ local Submenu = require("UI/Navigation/Submenu")
 local SidePanel = require("UI/Panels/SidePanel/SidePanel")
 local Notification = require("UI/Panels/Notification/Notification")
 local Items = require("Features/Items")
+local DataUtils = require("Utils/DataExtractors/DataUtils")
 
 local State = Items.BrowserState
+
+local function ItemName(item)
+    local name = DataUtils.SafeCall(function()
+        local record = item.id and TweakDB:GetRecord(item.id)
+        return record and DataUtils.GetLocalizedSafe(record:DisplayName())
+    end)
+    if name and name ~= "" then return name end
+    return item.name
+end
 
 local function DrawItemControls()
     Buttons.Dropdown("Inventory Action", State.Action, State.Actions,
@@ -16,7 +26,7 @@ local function SubmitItemInfo(item, section)
     local description = State.GetDescription(item.id)
     SidePanel.SubmitInfo("essential-item", {
         Eyebrow = "ESSENTIAL ITEM",
-        Title = item.name,
+        Title = ItemName(item),
         Icon = item.id,
         Rows = {
             { Label = "Section", Value = section },
@@ -38,7 +48,7 @@ local function DrawItemList(title, items)
             Buttons.Break(item.group)
             lastGroup = item.group
         end
-        local _, data = Buttons.OptionExtended(item.name, "", State.GetSummary(),
+        local _, data = Buttons.OptionExtended(ItemName(item), "", State.GetSummary(),
             "Apply the selected inventory action to this item.", function()
                 State.Apply(item)
             end)

@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Animation = require("UI/Widgets/Animation/Animation")
 local Context = require("UI/Core/Context")
 local Draw = require("UI/Core/Draw")
@@ -102,8 +103,8 @@ local function PlayerPosition()
 end
 
 local function FormatSpan(span)
-    if span >= 1000 then return string.format("%.1f km across", span / 1000) end
-    return string.format("%d m across", math.floor(span))
+    if span >= 1000 then return Language.Format("%.1f km across", span / 1000) end
+    return Language.Format("%d m across", math.floor(span))
 end
 
 local function DrawMap()
@@ -157,7 +158,7 @@ local function DrawMap()
     Draw.Rect(drawList, x, y, SIZE, SIZE, Style.Border, 0, 1)
     ImGui.SetCursorScreenPos(x, y + SIZE + 6)
     local caption = (s_Focus and s_FocusFrame >= Context.Frame - 1 and s_Focus.Label) or s_Caption
-    ImGui.Text(caption ~= "" and caption or "Night City")
+    ImGui.Text(Language.Text(caption ~= "" and caption or "Night City"))
     ImGui.SetCursorScreenPos(x, select(2, ImGui.GetCursorScreenPos()))
     local value = ImGui.ColorConvertU32ToFloat4(Style.TextDisabled)
     ImGui.TextColored(value[1], value[2], value[3], value[4], FormatSpan(s_View.Span))

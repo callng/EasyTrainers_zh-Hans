@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Surface = require("UI/Widgets/Surface/Surface")
 local Icons = require("UI/Style/Icons")
 local Animation = require("UI/Widgets/Animation/Animation")
@@ -122,7 +123,7 @@ function Dropdown.Option(id, label, valueRef, items, tip, onChange)
     local arrow = Dropdown.Opened and Dropdown.OwnerId == id and Icons.Expanded or Icons.Collapsed
     local arrowWidth = ImGui.CalcTextSize(arrow)
     Draw.Text(drawList, data.X + 8, textY, Style.Text,
-        Draw.FitText(label, data.Width - currentWidth - arrowWidth - 42))
+        Draw.FitText(DisplayText(label), data.Width - currentWidth - arrowWidth - 42))
     Draw.Text(drawList, data.X + data.Width - 8 - arrowWidth, textY, Style.Accent, arrow)
     Draw.Text(drawList, data.X + data.Width - 18 - arrowWidth - currentWidth, textY, Style.Text, current)
 
@@ -150,7 +151,7 @@ function Dropdown.Draw()
     local y = Dropdown.Surface.Y + SurfaceStyle.Padding
     local width = surfaceWidth - (SurfaceStyle.Padding * 2)
 
-    local headerLabel = Draw.FitText(Dropdown.Label, width * 0.4)
+    local headerLabel = Draw.FitText(DisplayText(Dropdown.Label), width * 0.4)
     local selectedText = Draw.FitText(DisplayText(Dropdown.Items[Dropdown.Current]), width * 0.52)
     Draw.Text(drawList, x, y, Style.TextDisabled, headerLabel)
     local selectedWidth = ImGui.CalcTextSize(selectedText)
@@ -203,7 +204,7 @@ function Dropdown.Draw()
     Draw.Line(drawList, x, footerY + 5, x + width, footerY + 5, Style.Border, 1)
     local position = string.format("%d / %d", Dropdown.Current, #Dropdown.Items)
     local positionWidth = ImGui.CalcTextSize(position)
-    Draw.Text(drawList, x, footerY + 11, Style.TextDisabled, "SELECT")
+    Draw.Text(drawList, x, footerY + 11, Style.TextDisabled, Language.Text("SELECT"))
     Draw.Text(drawList, x + width - positionWidth, footerY + 11, Style.TextDisabled, position)
 
     Surface.End(Dropdown.Surface)
