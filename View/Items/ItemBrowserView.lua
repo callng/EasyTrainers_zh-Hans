@@ -351,4 +351,4 @@ local function ItemBrowserView()
     end)
 end
 
-return Submenu.Create("Items", ItemBrowserView)
+return Submenu.Create("Inventory", ItemBrowserView)
