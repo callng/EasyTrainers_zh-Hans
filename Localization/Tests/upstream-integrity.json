@@ -1,5 +1,5 @@
 {
-  "commit": "2e4af6e04390c593976610990766561d08156d55",
+  "commit": "3d1fda9be9cd47e0f31d31bbc4c0a4633b861350",
   "files": {
     "Assets/Icons/ItemIcons.lua": "7229cf4c57a07f68026dd357645c27a8715b10be60283654199cbda9826e93ec",
     "Assets/Icons/ItemIcons0.png": "f8229dfe5d644f39cb51ec3d1a0dcbc6795217a6ac1ed5ef82c85e42087b94a4",
@@ -12,11 +12,14 @@
     "Assets/Icons/WeaponIcons1.png": "44956f51ba59b82d657cd0c0a78cf092302e929d50b74b758847023751065f64",
     "Assets/Map/NightCity.lua": "1f292a767fe225ddbbca2686f1b60e15899acc9347e0ce3a707c5e9f098c799f",
     "Assets/Map/NightCity.png": "d5c0d1161f691f01833a6a58552402ca282746c18d82a484ccd555fcc26ab545",
+    "Assets/Props/PropCatalog.lua": "eb2559c0317935d8ca6ba8e8c5f843d4f1be45a5b143e077c69bb9d0664fea11",
     "Config/JSON/Teleports.json": "26abb8c5ee02603a3cd92f5861d6561a928e7e1fac31eb37a1b2ba3b7aab68e3",
-    "Config/JSON/bindings.json": "9ef8a39b0bf1fcd8dfc578cf4b32bec3da88f8fef1d3b8e7c60545c33f378611",
+    "Config/JSON/WeaponTuningPresets.json": "510a150fbf4c6ab161d3d67dce592b9843ed2ccb74698c9d73dc59d9c8a6c2a6",
+    "Config/JSON/WorldEditorSaves.json": "f429b62526f90d74ecd132b504cbf2a838530403967a527c7d1693967fb37d92",
+    "Config/JSON/bindings.json": "7030ce13b51bf097785a922ace0487cbf547c96e8c100d1f5f0f8640d59513a1",
     "Core/cp2077-cet-kit/Cron.lua": "0e27050913d904e22d997c97978d3ad2e307ae3e3dcd5513c20f3cb79a275198",
     "Core/cp2077-cet-kit/GameSession.lua": "0fe5f78551c998cc82ed0fec72c033dd3701bebd601306ce93b0d0b91ea8eb9e",
     "Core/cp2077-cet-kit/LICENSE.txt": "ebfd5f05db59b0d8d233c10967a546a3ee7635ff339be7a6688154cbf6215855",
-    "lang/en.json": "59d785187eb915fa99d59904ca0b8bb01f7a30178554428bdffdb8e06156142d"
+    "lang/en.json": "7933fbd0301f1bd0f8396936e0a5b9d0ce3eb82e816398567a17c9068e34a87d"
   }
 }

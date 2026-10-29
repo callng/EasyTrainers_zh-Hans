@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Notification = require("UI/Panels/Notification/Notification")
 local Input = require("Core/Input")
 local Selection = require("Features/WorldEditor/Selection")
@@ -28,8 +29,8 @@ function Clipboard.CopyItems(items)
     end
 
     s_Layout = layout
-    local note = skipped > 0 and string.format(" Skipped %s that can't be copied.", Plural(skipped, "entity")) or ""
-    Notification.Info("Copied " .. Plural(#layout.Items, "prop") .. "." .. note)
+    local note = skipped > 0 and Language.Format(" Skipped %s that can't be copied.", Plural(skipped, "entity")) or ""
+    Notification.Info(Language.Format("Copied %s.", Plural(#layout.Items, "prop")) .. note)
     return true
 end
 
@@ -60,8 +61,8 @@ function Clipboard.DeleteSelection()
         Notification.Warning("Only props you placed can be deleted.")
         return
     end
-    local note = skipped > 0 and " Map entities were left alone." or ""
-    Notification.Info("Deleted " .. Plural(removed, "prop") .. "." .. note)
+    local note = skipped > 0 and Language.Text(" Map entities were left alone.") or ""
+    Notification.Info(Language.Format("Deleted %s.", Plural(removed, "prop")) .. note)
 end
 
 function Clipboard.Paste()

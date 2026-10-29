@@ -1,4 +1,5 @@
 local Logger = require("Core/Logger")
+local Language = require("Core/Language")
 local Input = require("Core/Input")
 local Bindings = require("Controls/Bindings")
 local Draw = require("UI/Core/Draw")
@@ -113,17 +114,18 @@ local function Muted(alpha)
 end
 
 local function ShadowText(drawList, x, y, color, text, alpha)
+    text = Language.Text(text)
     alpha = alpha or 1
     Draw.Text(drawList, x + 1, y + 1, Animation.WithAlpha(SHADOW_COLOR, alpha), text)
     Draw.Text(drawList, x, y, Animation.WithAlpha(color, alpha), text)
 end
 
 local function TextWidth(text)
-    return ImGui.CalcTextSize(text)
+    return ImGui.CalcTextSize(Language.Text(text))
 end
 
 local function Segment(text, color, gap, width)
-    return { Text = text, Color = color, Gap = gap or 0, Width = width }
+    return { Text = Language.Text(text), Color = color, Gap = gap or 0, Width = width }
 end
 
 local function RowWidth(row)
@@ -179,7 +181,7 @@ local function FormatVector(vector)
 end
 
 local function Tagged(tag, color, text)
-    return { Segment(tag, color, 0, SELECTION_TAG_WIDTH), Segment(Draw.FitText(text, SELECTION_TEXT_WIDTH), Style.Text) }
+    return { Segment(tag, color, 0, SELECTION_TAG_WIDTH), Segment(Draw.FitText(Language.Text(text), SELECTION_TEXT_WIDTH), Style.Text) }
 end
 
 local function PadNames()
@@ -190,7 +192,7 @@ local function PadButton(action, names)
     local binding = Bindings.Actions[action]
     local parts = {}
     for _, button in ipairs(binding and binding.btns or {}) do
-        if names[button] then table.insert(parts, names[button]) end
+        if names[button] then table.insert(parts, Language.Text(names[button])) end
     end
     return #parts > 0 and table.concat(parts, " + ") or nil
 end
@@ -433,13 +435,13 @@ local function DrawCard(drawList, screenWidth, screenHeight, lineHeight, deltaTi
     if card.Distance then ShadowText(drawList, contentX + contentWidth - TextWidth(card.Distance), cursorY, Muted(), card.Distance, alpha) end
     cursorY = cursorY + lineHeight + LINE_GAP
 
-    ShadowText(drawList, contentX, cursorY, Style.Text, Draw.FitText(card.Title or "-", contentWidth), alpha)
+    ShadowText(drawList, contentX, cursorY, Style.Text, Draw.FitText(Language.Text(card.Title or "-"), contentWidth), alpha)
     cursorY = cursorY + lineHeight + LINE_GAP + 4
 
     local labelWidth = contentWidth * 0.3
     for _, row in ipairs(card.Rows) do
         ShadowText(drawList, contentX, cursorY, Muted(), row[1], alpha)
-        ShadowText(drawList, contentX + labelWidth, cursorY, Style.Text, Draw.FitText(row[2], contentWidth - labelWidth), alpha)
+        ShadowText(drawList, contentX + labelWidth, cursorY, Style.Text, Draw.FitText(Language.Text(row[2]), contentWidth - labelWidth), alpha)
         cursorY = cursorY + lineHeight + LINE_GAP
     end
 end
@@ -627,7 +629,7 @@ local function PadControls()
 
     local selected = Selection.GetAll()
     if #selected > 1 then
-        Add(controls, link, "Attach To " .. Draw.FitText(selected[#selected].Name, 180))
+        Add(controls, link, "Attach To " .. Draw.FitText(Language.Text(selected[#selected].Name), 180))
         Add(controls, pick, "Add / Remove")
         Add(controls, select, "Select One")
         return controls
@@ -661,7 +663,7 @@ local function CurrentControls()
     if #selected == 0 then return WithPaste(CONTROLS) end
 
     if #selected > 1 then
-        return WithPaste({ { "Enter", "Attach To " .. Draw.FitText(selected[#selected].Name, 180) }, { "Ctrl+Click", "Add / Remove" }, { "Click", "Select One" } })
+        return WithPaste({ { "Enter", "Attach To " .. Draw.FitText(Language.Text(selected[#selected].Name), 180) }, { "Ctrl+Click", "Add / Remove" }, { "Click", "Select One" } })
     end
 
     local controls = {}

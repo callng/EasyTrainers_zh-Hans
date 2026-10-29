@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Logger = require("Core/Logger")
 local Lifecycle = require("Core/Lifecycle")
 local Input = require("Core/Input")
@@ -281,7 +282,7 @@ function WorldEditor.LinkSelection()
         return
     end
     Scene.Add(parent.Entity, parent.Name, parent.Kind)
-    Notification.Success(string.format("Attached %s to %s.", attached == 1 and lastChild.Name or (attached .. " props"), parent.Name))
+    Notification.Success(Language.Format("Attached %s to %s.", attached == 1 and lastChild.Name or (attached .. " props"), parent.Name))
     Selection.Select({ Entity = lastChild.Entity, Kind = lastChild.Kind, DisplayName = lastChild.Name, EntityHash = lastChild.EntityHash })
 end
 
@@ -295,7 +296,7 @@ function WorldEditor.DetachSelection()
         Notification.Warning("Select an attached prop or its parent first.")
         return
     end
-    Notification.Info(string.format("Detached %d prop%s.", detached, detached == 1 and "" or "s"))
+    Notification.Info(Language.Format(detached == 1 and "Detached %d prop." or "Detached %d props.", detached))
 end
 
 local function ShortcutsAllowed()

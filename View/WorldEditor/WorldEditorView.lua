@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Buttons = require("UI/Options/Buttons")
 local Input = require("Core/Input")
 local Submenu = require("UI/Navigation/Submenu")
@@ -374,8 +375,8 @@ local function SaveItems(name, items)
         Notification.Warning("Nothing here can be saved. Only listed props and vehicles can.")
         return
     end
-    local note = skipped > 0 and string.format(" Skipped %d.", skipped) or ""
-    Notification.Success(string.format("Saved %s (%d props).%s", save.Name, Saves.Count(save), note))
+    local note = skipped > 0 and Language.Format(" Skipped %d.", skipped) or ""
+    Notification.Success(Language.Format("Saved %s (%d props).%s", save.Name, Saves.Count(save), note))
 end
 
 local function Duplicate(depth, focus, mode)
@@ -500,7 +501,7 @@ local s_SceneView = Submenu.Create("Scene", function()
     end
 
     local label = UniqueLabels()
-    for _, row in ipairs(rows) do EntityRow(1, row.Entity, row.Name, label(Indent(row.Depth) .. row.Name)) end
+    for _, row in ipairs(rows) do EntityRow(1, row.Entity, row.Name, label(Indent(row.Depth) .. Language.Text(row.Name))) end
 
     Buttons.Break("Cleanup")
     Buttons.Option("Detach All", "Detach every attached prop.", function()
@@ -550,7 +551,7 @@ local function LoadSave(save, here)
         Notification.Error("Couldn't load " .. save.Name .. ".")
         return
     end
-    Notification.Info(string.format("Loading %s (%d props).", save.Name, spawned))
+    Notification.Info(Language.Format("Loading %s (%d props).", save.Name, spawned))
 end
 
 local s_SaveView = Submenu.Create("Saved Scene", function()

@@ -1,4 +1,5 @@
 local Logger = require("Core/Logger")
+local Language = require("Core/Language")
 
 local PropCatalog = {}
 
@@ -8,6 +9,7 @@ local SEARCH_LIMIT = 200
 local s_Categories = nil
 local s_All = nil
 local s_ByHash = nil
+local s_SearchLanguage = nil
 
 local function Load()
     if s_Categories then return end
@@ -77,12 +79,19 @@ end
 
 function PropCatalog.Search(text)
     Load()
+    local code = Language.GetCurrentCode()
+    if code ~= s_SearchLanguage then
+        for _, entry in ipairs(s_All) do
+            entry.LocalizedSearch = (Language.Text(entry.Name) .. " " .. Language.Text(entry.Group) .. " " .. Language.Text(entry.Category)):lower()
+        end
+        s_SearchLanguage = code
+    end
     local results = {}
     local needle = (text or ""):lower()
     if needle == "" then return results end
 
     for _, entry in ipairs(s_All) do
-        if entry.Search:find(needle, 1, true) then
+        if entry.Search:find(needle, 1, true) or entry.LocalizedSearch:find(needle, 1, true) then
             table.insert(results, entry)
             if #results >= SEARCH_LIMIT then break end
         end

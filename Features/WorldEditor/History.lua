@@ -1,3 +1,4 @@
+local Language = require("Core/Language")
 local Notification = require("UI/Panels/Notification/Notification")
 local Physics = require("Utils/Physics")
 local Rotation = require("Utils/Rotation")
@@ -207,7 +208,7 @@ local function Step(from, to, label)
     Push(to, s_Current)
     s_Current = target
     Apply(target)
-    Notification.Info(string.format("%s (%d left).", label == "undo" and "Undone" or "Redone", #from))
+    Notification.Info(Language.Format("%s (%d left).", label == "undo" and "Undone" or "Redone", #from))
 end
 
 function History.Undo()
